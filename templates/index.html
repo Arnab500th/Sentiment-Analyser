@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sentiment Analyzer</title>
+
+  <!-- ✅ Flask-safe CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+
+</head>
+
+<body>
+  <!-- Heading -->
+  <h1>Sentiment <span class="highlight">Analysis</span></h1>
+
+  <!-- Description -->
+  <p>
+    Analyze the emotional tone of your text instantly. Get polarity and
+    subjectivity scores to understand sentiment patterns.
+  </p>
+
+  <!-- Feature Icons -->
+  <div class="imgs">
+    <div class="img-item">
+      <img src="{{ url_for('static', filename='images/brain.png') }}" alt="NLP" />
+      <p>NLP Powered</p>
+    </div>
+
+    <div class="img-item">
+      <img src="{{ url_for('static', filename='images/zap.png') }}" alt="Fast" />
+      <p>Instant Results</p>
+    </div>
+
+    <div class="img-item">
+      <img src="{{ url_for('static', filename='images/chart-column-decreasing.png') }}" alt="Report" />
+      <p>Detailed Scores</p>
+    </div>
+  </div>
+
+  <!-- Input Card -->
+  <div class="card">
+    <form action="/" method="post">
+      <textarea id="text_analysis" name="text_analysis"
+        placeholder="Type or paste text here... Try something like 'I enjoy coding in Python.' or 'Java sucks!'"
+        required></textarea>
+
+      <button type="submit">Analyze Sentiment</button>
+    </form>
+
+    <!-- ✅ Result Section -->
+    {% if sentiment %}
+    <div class="result-card {{ sentiment }}">
+      <!-- Emoji -->
+      <div class="emoji">
+        {% if sentiment == "positive" %} 
+          😊 
+        {% elif sentiment == "negative" %}
+          ☹️ 
+        {% else %} 
+          😐 
+        {% endif %}
+      </div>
+
+      <!-- Sentiment Text -->
+      <h2>{{ sentiment | capitalize }} Sentiment</h2>
+
+      <!-- Polarity -->
+      <div class="meter">
+        <label>Polarity</label>
+        <div class="bar">
+          <div class="fill" style="width: {{ polarity_percent }}%"></div>
+        </div>
+        <span>{{ polarity }}</span>
+      </div>
+
+      <!-- Subjectivity -->
+      <div class="meter">
+        <label>Subjectivity</label>
+        <div class="bar">
+          <div class="fill" style="width: {{ subjectivity_percent }}%"></div>
+        </div>
+        <span>{{ subjectivity }}</span>
+      </div>
+
+      <!-- Refresh Button with Icon -->
+      <button type="button" onclick="window.location.href='/';" class="refresh-btn">
+        <img src="{{ url_for('static', filename='images/rotate-ccw.png') }}" alt="Refresh">
+        Analyze Another
+      </button>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Made using Python, NLP (TextBlob) & Flask</p>
+  </div>
+</body>
+
+</html>
